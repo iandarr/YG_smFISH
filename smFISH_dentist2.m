@@ -41,39 +41,39 @@ parentDir='/Users/iandardani/Dropbox (RajLab)/mouse'; % top-level folder of wher
 % inputs used to split up image files into subregions
 nrSub=5; % number of subregion rows
 ncSub=4; % number of subregion columns
-subregionFolders=makeSubregionFolderNames(nrSub,ncSub);
 
 %% Section 2: subdivide lage stitched images into smaller 'subregion' images. Dentist2/some computers cannot handle such large images
 % % this part can be skipped if the images are already in th 'subregion' folders
 % 
-% % YG102 s1
-% % Channel   CY3     A594        CY5         CY7
-% % Dye       Cy3     Alexa594    Atto647N    Atto680
-% % gene      BGN     ACTA2       UBC
-% rawDataSubDir='YG102/s1/largeImageIndividual';
-% preStitchedScanFilelist={...
-%     'DAPI.tif',...
-%     'CY3_BGN.tif',...
-%     'A594_ACTA2.tif',...
-%     'CY5_UBC.tif',...
-%     'Brightfield.tif'};
-% rawDataDir=fullfile(parentDir,filesep,rawDataSubDir);
-% splitImgIntoSubregions(rawDataDir,preStitchedScanFilelist,nrSub,ncSub)
-% 
-% % YG102 s5
-% % Channel   CY3     A594        CY5         CY7
-% % Dye       Cy3     Alexa594    Atto647N    Atto680
-% % gene      AXL     SOX10       NGFR
-% rawDataSubDir='YG102/s5/largeImageIndividual';
-% 
-% preStitchedScanFilelist={...
-%     'DAPI.tif',...
-%     'A594_SOX10.tif',...
-%     'CY3_AXL.tif',...
-%     'CY5_NGFR.tif',...
-%     'Brightfield.tif'};
-% rawDataDir=fullfile(parentDir,filesep,rawDataSubDir);
-% splitImgIntoSubregions(rawDataDir,preStitchedScanFilelist,nrSub,ncSub)
+% YG102 s1
+% Channel   CY3     A594        CY5         CY7
+% Dye       Cy3     Alexa594    Atto647N    Atto680
+% gene      BGN     ACTA2       UBC
+rawDataSubDir='YG102/s1/largeImageIndividual';
+subregionFolders=makeSubregionFolderNames(nrSub,ncSub);
+preStitchedScanFilelist={...
+    'DAPI.tif',...
+    'CY3_BGN.tif',...
+    'A594_ACTA2.tif',...
+    'CY5_UBC.tif',...
+    'Brightfield.tif'};
+rawDataDir=fullfile(parentDir,filesep,rawDataSubDir);
+splitImgIntoSubregions(rawDataDir,preStitchedScanFilelist,nrSub,ncSub)
+
+% YG102 s5
+% Channel   CY3     A594        CY5         CY7
+% Dye       Cy3     Alexa594    Atto647N    Atto680
+% gene      AXL     SOX10       NGFR
+rawDataSubDir='YG102/s5/largeImageIndividual';
+subregionFolders=makeSubregionFolderNames(nrSub,ncSub);
+preStitchedScanFilelist={...
+    'DAPI.tif',...
+    'A594_SOX10.tif',...
+    'CY3_AXL.tif',...
+    'CY5_NGFR.tif',...
+    'Brightfield.tif'};
+rawDataDir=fullfile(parentDir,filesep,rawDataSubDir);
+splitImgIntoSubregions(rawDataDir,preStitchedScanFilelist,nrSub,ncSub)
 
 %% Section 3: Process 'subregion' images with dentist2 to find spots
 sigma=1; % theoretically, the point spread function at 60X/1.4NA with 2x2 camera binning should have sigma of 0.4. Go larger than this. dentist2's default is 2.
@@ -85,6 +85,7 @@ launchGUI=false; % false to run a continuous loop to process spots for all subre
 % Dye       Cy3     Alexa594    Atto647N    Atto680
 % gene      BGN     ACTA2       UBC
 rawDataSubDir='YG102/s1/largeImageIndividual';
+subregionFolders=makeSubregionFolderNames(nrSub,ncSub);
 preStitchedScanFilelist={...
     'DAPI.tif',...
     'CY3_BGN.tif',...
@@ -102,21 +103,25 @@ for iSub=1:length(subregionFolders)
     %clear h
 end
 
-% YG102 s5  
+%% YG102 s5  
 % Channel   CY3     A594        CY5         CY7
 % Dye       Cy3     Alexa594    Atto647N    Atto680
 % gene      AXL     SOX10       NGFR
 rawDataSubDir='YG102/s5/largeImageIndividual';
+subregionFolders=makeSubregionFolderNames(nrSub,ncSub);
+% some subregions have no cells, exclude those from the list:
+subregionFolders=subregionFolders(~ismember(subregionFolders,["subregion1_r1_c1","subregion2_r1_c2","subregion5_r2_c1"]));
 preStitchedScanFilelist={...
     'DAPI.tif',...
     'CY3_AXL.tif',...
-    'A594_SOX10.tif',...
+    'A594_SOX10.tif',..
     'CY5_NGFR.tif',...
     'Brightfield.tif'};
 channelTypes={'dapi','FISH','FISH','FISH','other'};
 thresholds=   [       700     400   500]; % chosen 5-Sep-2022 2:45pm based on iSub=4
 for iSub=1:length(subregionFolders)
     subregionFolder=subregionFolders(iSub);
+    fprintf('-------------- working on %s --------------\n',subregionFolder)
     cd(fullfile(parentDir,filesep,rawDataSubDir,filesep,subregionFolder))
     h=launchD2ThresholdGUI('preStitchedScanFilelist',preStitchedScanFilelist,'launchGUI',launchGUI,'sigma',sigma,'channelTypes',channelTypes,'thresholds',thresholds,'aTrousMinThreshFactor',aTrousMinThreshFactor);
     pause(2)
