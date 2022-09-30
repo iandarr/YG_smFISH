@@ -53,7 +53,7 @@ for i=1:length(subregionFolders)
         
         TspotsSub.globalX = TspotsSub.x + imgPixelRows*(srRow-1);
         TspotsSub.globalY = TspotsSub.y + imgPixelCols*(srCol-1);
-        movevars(TspotsSub,{'srNum','srRow','srCol','globalX','globalY'},'Before','spotID'); % move to first few columns
+        TspotsSub=movevars(TspotsSub,{'srNum','srRow','srCol','globalX','globalY'},'Before','spotID'); % move to first few columns
         Tspots=[Tspots;TspotsSub];
     end
 end
@@ -70,7 +70,7 @@ figure(1);
 scatter(TspotsShow.globalY,TspotsShow.globalX,spotSize,colorVect)
 set(gca, 'YDir','reverse')
 title('YG102s1')
-
+xlabel('globalY'); xlabel('globalX');
 %% smFISH_QC for YG102 s5
 % modify these subfolders as appropriate
 rawDataDir=fullfile(rawDataParentDir,filesep,'YG102/s5/largeImageIndividual');
@@ -114,7 +114,7 @@ for i=1:length(subregionFolders)
         
         TspotsSub.globalX = TspotsSub.x + imgPixelRows*(srRow-1);
         TspotsSub.globalY = TspotsSub.y + imgPixelCols*(srCol-1);
-        movevars(TspotsSub,{'srNum','srRow','srCol','globalX','globalY'},'Before','spotID'); % move to first few columns
+        TspotsSub=movevars(TspotsSub,{'srNum','srRow','srCol','globalX','globalY'},'Before','spotID'); % move to first few columns
         Tspots=[Tspots;TspotsSub];
     end
 end
@@ -130,9 +130,8 @@ spotSize=2;
 figure(2);
 scatter(TspotsShow.globalY,TspotsShow.globalX,spotSize,colorVect)
 set(gca, 'YDir','reverse')
-
 title('YG102s5')
-
+xlabel('globalY'); xlabel('globalX');
 %% function to generate subregion folder names
 function [subregionFolders,srVect,rVect,cVect]=makeSubregionFolderNames(nrSub,ncSub)
 % subregion array definition
