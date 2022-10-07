@@ -2,8 +2,8 @@
 clear
 
 % change these 2 folders to match your local folder structure:
-addpath('/Users/iandardani/Code/dentist2') % dentist2
-addpath('/Users/iandardani/Code/rajlabimagetools') % if don't have this, wil get this error: Undefined function 'scale' for input arguments of type 'uint16'. Note that it includes a function 'scale.m' which is also the name of functions in various MATLAB toolboxes
+addpath('/Users/ssa2724/Documents/GitHub/dentist2/') % dentist2
+addpath('/Users/ssa2724/Documents/GitHub/rajlabimagetools/') % if don't have this, wil get this error: Undefined function 'scale' for input arguments of type 'uint16'. Note that it includes a function 'scale.m' which is also the name of functions in various MATLAB toolboxes
 
 
 
@@ -18,9 +18,9 @@ launchGUI=true; % false to run a continuous loop to process spots for all subreg
 preStitchedScanFilelist={...
     'DAPI.tif',...
     'CY3_BGN.tif',...
-    'A594_ACTA2.tif',...
+    'A594_ACTA2.tif',... 
     'CY5_UBC.tif',...
-    'Brightfield.tif'};
+    'Brightfield.tif'};                            
 channelTypes={'dapi','FISH','FISH','FISH','other'};
 thresholds=   [       500     500   800];
 h=launchD2ThresholdGUI('preStitchedScanFilelist',preStitchedScanFilelist,'launchGUI',launchGUI,'sigma',sigma,'channelTypes',channelTypes,'thresholds',thresholds,'aTrousMinThreshFactor',aTrousMinThreshFactor);

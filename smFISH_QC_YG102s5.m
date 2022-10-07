@@ -2,8 +2,8 @@
 clear
 
 % change these 2 folders to match your local folder structure:
-addpath('/Users/iandardani/Code/dentist2') % dentist2
-addpath('/Users/iandardani/Code/rajlabimagetools') % if don't have this, wil get this error: Undefined function 'scale' for input arguments of type 'uint16'. Note that it includes a function 'scale.m' which is also the name of functions in various MATLAB toolboxes
+addpath('/Users/ssa2724/Documents/GitHub/dentist2/') % dentist2
+addpath('/Users/ssa2724/Documents/GitHub/rajlabimagetools/') % if don't have this, wil get this error: Undefined function 'scale' for input arguments of type 'uint16'. Note that it includes a function 'scale.m' which is also the name of functions in various MATLAB toolboxes
 
 
 
